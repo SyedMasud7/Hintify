@@ -1,0 +1,2977 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hintify Professional - AI-Powered Learning Platform</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Divine Blue Night Sky Theme v4.5 */
+            --primary: #4169e1;
+            --primary-light: #6495ed;
+            --primary-dark: #1e3a8a;
+            --secondary: #1e90ff;
+            --secondary-light: #4fc3f7;
+            --secondary-dark: #0d47a1;
+            --accent: #00bfff;
+            --accent-light: #40e0d0;
+            --accent-dark: #0080ff;
+            --success: #00ff7f;
+            --success-light: #7fffd4;
+            --success-dark: #00c853;
+            --error: #ff6b6b;
+            --error-light: #ff8a80;
+            --error-dark: #d32f2f;
+            --warning: #ffd700;
+            --warning-light: #ffeb3b;
+            --warning-dark: #f57c00;
+            --info: #87ceeb;
+            --info-light: #b3e5fc;
+            --info-dark: #0277bd;
+            /* Divine Gradients */
+            --gradient-primary: linear-gradient(135deg, #4169e1 0%, #1e90ff 100%);
+            --gradient-accent: linear-gradient(135deg, #00bfff 0%, #4169e1 100%);
+            --gradient-success: linear-gradient(135deg, #00ff7f 0%, #00bfff 100%);
+            --gradient-bg: linear-gradient(135deg, #0a1628 0%, #1a2744 50%, #2a3858 100%);
+            /* Blue Night Sky Background */
+            --bg-primary: #0a1628;
+            --bg-secondary: #1a2744;
+            --bg-tertiary: #2a3858;
+            /* Divine Glassmorphism */
+            --glass-bg: rgba(65, 105, 225, 0.12);
+            --glass-bg-strong: rgba(65, 105, 225, 0.20);
+            --glass-border: rgba(100, 149, 237, 0.25);
+            --glass-shadow: 0 8px 32px 0 rgba(65, 105, 225, 0.3);
+            --glass-shadow-strong: 0 12px 40px 0 rgba(65, 105, 225, 0.4);
+            /* Divine Text */
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.9);
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --text-gradient: linear-gradient(135deg, #4169e1, #00bfff);
+        }
+        
+        [data-theme="light"] {
+            /* Light Theme */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-tertiary: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            --text-primary: #1e293b;
+            --text-secondary: rgba(30, 41, 59, 0.8);
+            --text-muted: rgba(30, 41, 59, 0.5);
+        }
+        
+        /* Performance Optimizations */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+        }
+        
+        /* GPU Acceleration for animations */
+        .orb,
+        .glass-card,
+        .stat-card,
+        .chart-card,
+        .subject-card,
+        .question-nav-btn,
+        .difficulty-btn,
+        .btn {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+        
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            
+            .orb {
+                animation: none !important;
+            }
+            
+            .question-nav-btn.current {
+                animation: none !important;
+            }
+        }
+        
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Static Underwater Background - EXACTLY like your image */
+        #static-underwater-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: 
+                /* Sparkles - white dots scattered throughout */
+                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+                radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+                radial-gradient(circle at 45% 30%, rgba(255, 255, 255, 0.7) 1px, transparent 1px),
+                radial-gradient(circle at 70% 25%, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                radial-gradient(circle at 25% 40%, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+                radial-gradient(circle at 90% 35%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+                radial-gradient(circle at 10% 50%, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                radial-gradient(circle at 60% 45%, rgba(255, 255, 255, 0.7) 1px, transparent 1px),
+                radial-gradient(circle at 35% 60%, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+                radial-gradient(circle at 80% 55%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+                radial-gradient(circle at 20% 70%, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                radial-gradient(circle at 55% 65%, rgba(255, 255, 255, 0.7) 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+                radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+                radial-gradient(circle at 65% 85%, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+                radial-gradient(circle at 30% 90%, rgba(255, 255, 255, 0.7) 1px, transparent 1px),
+                /* Bright cyan light rays from top - concentrated at center */
+                linear-gradient(180deg, 
+                    rgba(0, 255, 255, 0.4) 0%,
+                    rgba(0, 230, 240, 0.3) 8%,
+                    rgba(0, 200, 220, 0.2) 15%,
+                    rgba(0, 170, 200, 0.12) 25%,
+                    rgba(0, 140, 180, 0.06) 35%,
+                    rgba(0, 100, 150, 0.03) 50%,
+                    transparent 70%
+                ),
+                /* Additional light beams */
+                linear-gradient(180deg, 
+                    transparent 0%,
+                    rgba(0, 255, 255, 0.15) 5%,
+                    rgba(0, 200, 220, 0.08) 15%,
+                    transparent 40%
+                ),
+                /* Dark teal/blue gradient background */
+                linear-gradient(180deg,
+                    #003d5c 0%,
+                    #002840 30%,
+                    #001a2e 60%,
+                    #000a15 100%
+                );
+            background-size: 
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%,
+                100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        /* Horizontal Text Splitting Animation */
+        @keyframes text-split {
+            0% {
+                transform: scaleX(0.3);
+                letter-spacing: -0.5em;
+                opacity: 0;
+            }
+            40% {
+                transform: scaleX(1.1);
+                letter-spacing: 0.05em;
+            }
+            100% {
+                transform: scaleX(1);
+                letter-spacing: 0;
+                opacity: 1;
+            }
+        }
+        
+        .text-split-animation {
+            animation: text-split 1.2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+        }
+        
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+            box-shadow: var(--glass-shadow);
+        }
+        
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+            background: rgba(212, 175, 55, 0.15);
+        }
+        
+        .theme-toggle {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glass-shadow-strong);
+            background: var(--glass-bg-strong);
+        }
+        
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.5s; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 3rem 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .subject-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.4);
+            border-color: var(--primary);
+        }
+        
+        .subject-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: var(--glass-bg);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        /* Analytics Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glass-shadow-strong);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .stat-content {
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .chart-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .chart-card:hover {
+            box-shadow: var(--glass-shadow-strong);
+        }
+        
+        .chart-card-wide {
+            grid-column: 1 / -1;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .chart-card-wide .chart-container {
+            height: 250px;
+        }
+        
+        .progress-rings {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .progress-ring-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .progress-ring-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glass-shadow-strong);
+        }
+        
+        .progress-ring-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-ring-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle-bg {
+            fill: none;
+            stroke: var(--bg-tertiary);
+            stroke-width: 8;
+        }
+        
+        .progress-ring-circle {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 326.73;
+            stroke-dashoffset: 326.73;
+            transition: stroke-dashoffset 1s ease;
+        }
+        
+        .progress-ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        /* Test Interface */
+        .test-interface {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .question-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .question-number {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        
+        .difficulty-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .difficulty-badge.easy { background: var(--success); color: white; }
+        .difficulty-badge.medium { background: var(--warning); color: white; }
+        .difficulty-badge.hard { background: var(--error); color: white; }
+        
+        /* Difficulty Switcher */
+        .difficulty-switcher {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .difficulty-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .difficulty-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .difficulty-btn.active {
+            color: white;
+            border-color: currentColor;
+            box-shadow: 0 4px 15px currentColor;
+        }
+        
+        .difficulty-btn[data-difficulty="EASY"].active {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        
+        .difficulty-btn[data-difficulty="MEDIUM"].active {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+        
+        .difficulty-btn[data-difficulty="HARD"].active {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+        
+        .difficulty-label {
+            font-size: 1.1rem;
+        }
+        
+        .question-count {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        /* Question Navigation Grid */
+        .question-nav-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .question-nav-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .question-nav-title i {
+            color: var(--primary);
+        }
+        
+        .question-nav-subtitle {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+        
+        .question-nav-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            margin-bottom: 0.75rem;
+            justify-content: center;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+        }
+        
+        .question-nav-btn {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 2px solid var(--glass-border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .question-nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        .question-nav-btn.unanswered {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--glass-border);
+            color: var(--text-muted);
+        }
+        
+        .question-nav-btn.current {
+            background: var(--gradient-primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            animation: pulse-current 2s infinite;
+        }
+        
+        @keyframes pulse-current {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .question-nav-btn.correct {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: #10b981;
+            color: white;
+        }
+        
+        .question-nav-btn.correct::after {
+            content: '✓';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            border: 2px solid var(--bg-primary);
+        }
+        
+        .question-nav-btn.incorrect {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-color: #ef4444;
+            color: white;
+        }
+        
+        .question-nav-btn.incorrect::after {
+            content: '✗';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            border: 2px solid var(--bg-primary);
+        }
+        
+        .question-nav-legend {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .legend-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid var(--glass-border);
+        }
+        
+        .legend-dot.unanswered {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .legend-dot.current {
+            background: var(--gradient-primary);
+            border-color: var(--primary);
+        }
+        
+        .legend-dot.correct {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: #10b981;
+        }
+        
+        .legend-dot.incorrect {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-color: #ef4444;
+        }
+        
+        @media (max-width: 768px) {
+            .question-nav-grid {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .question-nav-btn {
+                font-size: 0.9rem;
+            }
+            
+            .question-nav-subtitle {
+                display: none;
+            }
+        }
+        
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .option {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .option:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .option.correct {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .option.incorrect {
+            background: var(--error);
+            color: white;
+            border-color: var(--error);
+        }
+        
+        .option-letter {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .test-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .hint-section {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .hint-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hint-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .test-summary {
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .score-display {
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mb-2 { margin-bottom: 2rem; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Static Underwater Background - Exactly like your image -->
+    <div id="static-underwater-bg" role="presentation" aria-hidden="true"></div>
+    
+    <header class="header">
+        <nav class="nav">
+            <div class="logo text-split-animation">
+                <i class="fas fa-graduation-cap"></i>
+                Hintify Professional
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" onclick="showSection('home', event)">Home</a>
+                <a href="#" class="nav-link" onclick="showSection('test', event)">Take Test</a>
+                <a href="#" class="nav-link" onclick="showSection('upload', event)">Upload</a>
+                <a href="#" class="nav-link" onclick="showSection('my-questions', event)">My Questions</a>
+                <a href="#" class="nav-link" onclick="showSection('analytics', event)">Analytics</a>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1 class="text-split-animation">🎓 Hintify Professional</h1>
+                <p>AI-Powered Learning Platform with Intelligent Hints</p>
+                <button class="btn btn-primary" onclick="showSection('test', event)">
+                    <i class="fas fa-play"></i> Start Learning
+                </button>
+                <button class="btn btn-secondary" onclick="showSection('upload', event)">
+                    <i class="fas fa-upload"></i> Upload Documents
+                </button>
+            </div>
+
+            <!-- Analytics Section -->
+            <div class="glass-card" style="margin: 3rem 0;">
+                <h2 class="text-center mb-2">📊 Your Performance</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="tests-taken">0</div>
+                        <div class="stat-label">Tests Taken</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="accuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="questions-available">180</div>
+                        <div class="stat-label">Questions Available</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="day-streak">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Questions Section -->
+            <div class="glass-card">
+                <h2 class="text-center mb-2">📝 My Generated Questions</h2>
+                <div id="my-questions-list"></div>
+            </div>
+        </section>
+
+        <!-- Test Section -->
+        <section id="test" class="section">
+            <!-- Subject Selection -->
+            <div id="subject-selection" class="glass-card">
+                <h2 class="text-center mb-2">Choose Your Subject</h2>
+                <div id="subjects-grid" class="subjects-grid"></div>
+            </div>
+            
+            <!-- Test Interface -->
+            <div id="test-interface" class="test-interface hidden">
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number" id="question-counter">Question 1 of 15</span>
+                        <span class="difficulty-badge" id="difficulty-badge">EASY</span>
+                    </div>
+                    
+                    <!-- Difficulty Switcher -->
+                    <div class="difficulty-switcher">
+                        <button class="difficulty-btn active" data-difficulty="EASY" onclick="switchDifficulty('EASY')">
+                            <span class="difficulty-label">Easy</span>
+                            <span class="question-count">15 Q</span>
+                        </button>
+                        <button class="difficulty-btn" data-difficulty="MEDIUM" onclick="switchDifficulty('MEDIUM')">
+                            <span class="difficulty-label">Medium</span>
+                            <span class="question-count">15 Q</span>
+                        </button>
+                        <button class="difficulty-btn" data-difficulty="HARD" onclick="switchDifficulty('HARD')">
+                            <span class="difficulty-label">Hard</span>
+                            <span class="question-count">15 Q</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Question Navigation Grid -->
+                    <div class="question-nav-container">
+                        <h4 class="question-nav-title">
+                            <i class="fas fa-th"></i> Question Navigator
+                            <span class="question-nav-subtitle">Click any question to jump</span>
+                        </h4>
+                        <div class="question-nav-grid" id="question-nav-grid">
+                            <!-- Grid will be populated by JavaScript -->
+                        </div>
+                        <div class="question-nav-legend">
+                            <div class="legend-item">
+                                <span class="legend-dot unanswered"></span>
+                                <span>Unanswered</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot current"></span>
+                                <span>Current</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot correct"></span>
+                                <span>Correct</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot incorrect"></span>
+                                <span>Incorrect</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-text" id="current-question">Loading question...</div>
+                    
+                    <div class="options-grid" id="options-container"></div>
+                    
+                    <div id="hint-container" class="hidden"></div>
+                    
+                    <div class="test-controls">
+                        <button class="btn btn-secondary" onclick="previousQuestion()">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button class="btn btn-secondary" onclick="getHint()">
+                            <i class="fas fa-lightbulb"></i> Get Hint
+                        </button>
+                        <button class="btn btn-primary" onclick="submitAnswer()">
+                            Submit Answer <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn btn-primary" onclick="nextQuestion()">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="test-controls" style="margin-top: 2rem;">
+                    <button class="btn btn-secondary" onclick="backToSubjects()">
+                        <i class="fas fa-arrow-left"></i> Back to Subjects
+                    </button>
+                    <button class="btn btn-primary" onclick="finishTest()">
+                        <i class="fas fa-flag-checkered"></i> Finish Test
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Test Summary -->
+            <div id="test-summary" class="glass-card hidden">
+                <div class="test-summary">
+                    <h2>🎉 Test Complete!</h2>
+                    <div class="score-display" id="final-score">0%</div>
+                    <p id="score-message" style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;"></p>
+                    <div class="stats-grid" style="max-width: 600px; margin: 0 auto 2rem;">
+                        <div class="stat-card">
+                            <div class="stat-value" id="correct-count">0</div>
+                            <div class="stat-label">Correct</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="incorrect-count">0</div>
+                            <div class="stat-label">Incorrect</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="backToSubjects()">
+                        <i class="fas fa-redo"></i> Take Another Test
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upload Section -->
+        <section id="upload" class="section">
+            <div class="glass-card">
+                <h2 class="text-center mb-2">📤 Upload Documents</h2>
+                <p class="text-center" style="color: var(--text-secondary); margin-bottom: 2rem;">
+                    Upload PDF, DOCX, or PPTX files to automatically generate 45 questions
+                </p>
+                <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>Drop files here or click to browse</h3>
+                    <p style="color: var(--text-secondary);">Supports PDF, DOCX, PPTX (max 10MB)</p>
+                    <input type="file" id="file-input" style="display:none" accept=".pdf,.docx,.pptx">
+                </div>
+                <div id="upload-status" style="margin-top: 2rem;"></div>
+            </div>
+        </section>
+
+        <!-- My Questions Section -->
+        <section id="my-questions" class="section">
+            <div class="glass-card">
+                <h2 class="text-center mb-2">📝 My Generated Questions</h2>
+                <p class="text-center" style="color: var(--text-secondary); margin-bottom: 2rem;">
+                    Questions generated from your uploaded documents
+                </p>
+                
+                <div id="my-questions-content">
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+                        <p style="margin-top: 1rem; color: var(--text-secondary);">Loading your questions...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <div class="glass-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <div>
+                        <h2 style="margin: 0;">📊 Analytics Dashboard</h2>
+                        <p style="color: var(--text-secondary); margin: 0.5rem 0 0 0;">
+                            Track your learning progress and performance
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-secondary" onclick="exportAnalytics('png')" title="Export as PNG">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearAnalytics()" title="Clear all data">
+                            <i class="fas fa-trash"></i> Clear Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Enhanced Stat Cards -->
+                <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--gradient-primary);">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-tests-taken">0</div>
+                            <div class="stat-label">Tests Taken</div>
+                            <div class="stat-trend" id="stat-tests-trend"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--gradient-success);">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-avg-accuracy">0%</div>
+                            <div class="stat-label">Average Accuracy</div>
+                            <div class="stat-trend" id="stat-accuracy-trend"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--gradient-accent);">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-total-questions">0</div>
+                            <div class="stat-label">Questions Attempted</div>
+                            <div class="stat-trend" id="stat-questions-trend"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: var(--gradient-accent);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-avg-time">0s</div>
+                            <div class="stat-label">Avg Time/Question</div>
+                            <div class="stat-trend" id="stat-time-trend"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, var(--warning) 0%, var(--error) 100%);">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-streak">0</div>
+                            <div class="stat-label">Day Streak</div>
+                            <div class="stat-trend" id="stat-streak-trend"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, var(--success) 0%, var(--primary) 100%);">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-best-subject">-</div>
+                            <div class="stat-label">Best Subject</div>
+                            <div class="stat-trend" id="stat-best-accuracy"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                    <!-- Donut Chart - Accuracy by Subject -->
+                    <div class="chart-card">
+                        <h3 class="chart-title">
+                            <i class="fas fa-chart-pie"></i> Accuracy by Subject
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="chart-accuracy-subject"></canvas>
+                        </div>
+                        <div class="chart-legend" id="subject-legend"></div>
+                    </div>
+
+                    <!-- Bar Chart - Performance by Difficulty -->
+                    <div class="chart-card">
+                        <h3 class="chart-title">
+                            <i class="fas fa-chart-bar"></i> Performance by Difficulty
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="chart-difficulty"></canvas>
+                        </div>
+                        <div class="chart-legend" id="difficulty-legend"></div>
+                    </div>
+
+                    <!-- Radar Chart - Subject Comparison -->
+                    <div class="chart-card">
+                        <h3 class="chart-title">
+                            <i class="fas fa-chart-area"></i> Subject Comparison
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="chart-radar"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Line Chart - Progress Over Time -->
+                    <div class="chart-card" style="grid-column: 1 / -1;">
+                        <h3 class="chart-title">
+                            <i class="fas fa-chart-line"></i> Progress Over Time
+                        </h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="chart-progress"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Heatmap - Performance Matrix -->
+                    <div class="chart-card" style="grid-column: 1 / -1;">
+                        <h3 class="chart-title">
+                            <i class="fas fa-th"></i> Performance Heatmap (Subject × Difficulty)
+                        </h3>
+                        <div id="heatmap-container" style="padding: 1rem;"></div>
+                    </div>
+                </div>
+
+                <!-- Progress Rings -->
+                <div class="progress-rings" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                    <div class="progress-ring-card">
+                        <h4>Overall Progress</h4>
+                        <div class="progress-ring-container">
+                            <svg class="progress-ring" width="120" height="120">
+                                <circle class="progress-ring-circle-bg" cx="60" cy="60" r="52" />
+                                <circle class="progress-ring-circle" id="progress-overall" cx="60" cy="60" r="52" />
+                            </svg>
+                            <div class="progress-ring-text" id="progress-overall-text">0%</div>
+                        </div>
+                    </div>
+                    <div class="progress-ring-card">
+                        <h4>Easy Questions</h4>
+                        <div class="progress-ring-container">
+                            <svg class="progress-ring" width="120" height="120">
+                                <circle class="progress-ring-circle-bg" cx="60" cy="60" r="52" />
+                                <circle class="progress-ring-circle" id="progress-easy" cx="60" cy="60" r="52" style="stroke: var(--success);" />
+                            </svg>
+                            <div class="progress-ring-text" id="progress-easy-text">0%</div>
+                        </div>
+                    </div>
+                    <div class="progress-ring-card">
+                        <h4>Medium Questions</h4>
+                        <div class="progress-ring-container">
+                            <svg class="progress-ring" width="120" height="120">
+                                <circle class="progress-ring-circle-bg" cx="60" cy="60" r="52" />
+                                <circle class="progress-ring-circle" id="progress-medium" cx="60" cy="60" r="52" style="stroke: var(--warning);" />
+                            </svg>
+                            <div class="progress-ring-text" id="progress-medium-text">0%</div>
+                        </div>
+                    </div>
+                    <div class="progress-ring-card">
+                        <h4>Hard Questions</h4>
+                        <div class="progress-ring-container">
+                            <svg class="progress-ring" width="120" height="120">
+                                <circle class="progress-ring-circle-bg" cx="60" cy="60" r="52" />
+                                <circle class="progress-ring-circle" id="progress-hard" cx="60" cy="60" r="52" style="stroke: var(--error);" />
+                            </svg>
+                            <div class="progress-ring-text" id="progress-hard-text">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insights & Recommendations -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+                    <div class="glass-card" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem;">
+                            <i class="fas fa-lightbulb" style="color: var(--warning);"></i> Insights & Recommendations
+                        </h3>
+                        <div id="insights-container" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="insight-item">
+                                <i class="fas fa-info-circle" style="color: var(--info);"></i>
+                                <span>Complete more tests to see personalized insights</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem;">
+                            <i class="fas fa-history" style="color: var(--primary);"></i> Recent Activity
+                        </h3>
+                        <div id="recent-activity-container" style="max-height: 300px; overflow-y: auto;">
+                            <div style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                                No recent activity
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Breakdown -->
+                <div class="glass-card" style="padding: 2rem;">
+                    <h3 style="margin-bottom: 1.5rem;">
+                        <i class="fas fa-table"></i> Detailed Performance Breakdown
+                    </h3>
+                    <div id="breakdown-table" style="overflow-x: auto;"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTheme();
+            loadSubjects();
+            updateAnalytics();
+            loadMyQuestions();
+        });
+
+        // Theme
+        function initializeTheme() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            updateThemeIcon(theme);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            document.getElementById('theme-icon').className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Navigation
+        function showSection(id, event) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Load My Questions when that section is shown
+            if (id === 'my-questions') {
+                loadMyQuestions();
+            }
+            
+            // Load Analytics when that section is shown
+            if (id === 'analytics') {
+                updateAnalytics();
+            }
+        }
+
+        // Test State
+        let currentTest = {
+            subjectId: null,
+            subjectName: null,
+            questions: [],
+            currentIndex: 0,
+            answers: [],
+            score: 0
+        };
+        
+        // Start Test from My Questions (uploaded documents)
+        async function startMyQuestionsTest(sourceDocument) {
+            console.log('Starting test for document:', sourceDocument);
+            
+            try {
+                // Fetch all uploaded questions
+                const response = await fetch('/api/upload/uploaded-questions');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch questions: ' + response.status);
+                }
+                
+                const allQuestions = await response.json();
+                console.log('All questions:', allQuestions);
+                
+                // Filter questions for this specific document
+                const questions = allQuestions.filter(q => q.source_document === sourceDocument);
+                console.log('Filtered questions for', sourceDocument, ':', questions);
+                
+                if (questions.length === 0) {
+                    alert('No questions found for this document.');
+                    return;
+                }
+                
+                // Initialize test with document questions
+                currentTest = {
+                    subjectId: questions[0].subject_id || 1,
+                    subjectName: sourceDocument,
+                    difficulty: 'MIXED',
+                    questions: questions,
+                    currentIndex: 0,
+                    answers: new Array(questions.length).fill(null),
+                    results: new Array(questions.length).fill(undefined),
+                    score: 0,
+                    sourceDocument: sourceDocument,
+                    startTime: Date.now()
+                };
+                
+                console.log('Test initialized:', currentTest);
+                
+                // Switch to test section
+                showSection('test');
+                
+                // Hide subject selection, show test interface
+                document.getElementById('subject-selection').classList.add('hidden');
+                document.getElementById('test-interface').classList.remove('hidden');
+                document.getElementById('test-summary').classList.add('hidden');
+                
+                // Hide difficulty switcher for document tests (mixed difficulty)
+                const difficultySwitcher = document.querySelector('.difficulty-switcher');
+                if (difficultySwitcher) {
+                    difficultySwitcher.style.display = 'none';
+                }
+                
+                // Initialize question navigation grid
+                initQuestionNavGrid();
+                
+                // Load first question
+                loadQuestion();
+                
+                console.log('Test started successfully with', questions.length, 'questions');
+            } catch (error) {
+                console.error('Failed to start test:', error);
+                alert('Failed to start test: ' + error.message);
+            }
+        }
+
+        // Start Test - FIXED
+        async function startTest(subjectId, subjectName, difficulty = 'EASY') {
+            console.log(`Starting test for subject ${subjectId}: ${subjectName} - ${difficulty}`);
+            
+            try {
+                // Load questions for this subject and difficulty
+                const response = await fetch(`/api/questions/?subject_id=${subjectId}&difficulty=${difficulty}&limit=15`);
+                const questions = await response.json();
+                
+                if (questions.length === 0) {
+                    alert(`No ${difficulty.toLowerCase()} questions available for this subject.`);
+                    return;
+                }
+                
+                // Initialize test
+                currentTest = {
+                    subjectId,
+                    subjectName,
+                    difficulty,
+                    questions,
+                    currentIndex: 0,
+                    answers: new Array(questions.length).fill(null),
+                    results: new Array(questions.length).fill(undefined),
+                    score: 0,
+                    startTime: Date.now()
+                };
+                
+                // Update difficulty switcher UI
+                updateDifficultySwitcher(difficulty);
+                
+                // Show test interface
+                document.getElementById('subject-selection').classList.add('hidden');
+                document.getElementById('test-interface').classList.remove('hidden');
+                document.getElementById('test-summary').classList.add('hidden');
+                
+                // Show difficulty switcher for regular tests
+                const difficultySwitcher = document.querySelector('.difficulty-switcher');
+                if (difficultySwitcher) {
+                    difficultySwitcher.style.display = 'flex';
+                }
+                
+                // Initialize question navigation grid
+                initQuestionNavGrid();
+                
+                // Load first question
+                loadQuestion();
+            } catch (error) {
+                console.error('Failed to load test questions:', error);
+                alert('Failed to load test questions. Please try again.');
+            }
+        }
+        
+        function updateDifficultySwitcher(difficulty) {
+            // Update active state on difficulty buttons
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.difficulty === difficulty) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        async function switchDifficulty(newDifficulty) {
+            if (!currentTest) {
+                console.error('No active test');
+                return;
+            }
+            
+            if (currentTest.difficulty === newDifficulty) {
+                console.log('Already on this difficulty');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const buttons = document.querySelectorAll('.difficulty-btn');
+                buttons.forEach(btn => btn.disabled = true);
+                
+                // Load new questions for the selected difficulty
+                const response = await fetch(`/api/questions/?subject_id=${currentTest.subjectId}&difficulty=${newDifficulty}&limit=15`);
+                const questions = await response.json();
+                
+                if (questions.length === 0) {
+                    alert(`No ${newDifficulty.toLowerCase()} questions available for this subject.`);
+                    buttons.forEach(btn => btn.disabled = false);
+                    return;
+                }
+                
+                // Reset test state with new questions
+                currentTest.difficulty = newDifficulty;
+                currentTest.questions = questions;
+                currentTest.currentIndex = 0;
+                currentTest.answers = new Array(questions.length).fill(null);
+                currentTest.results = new Array(questions.length).fill(undefined);
+                
+                // Update UI
+                updateDifficultySwitcher(newDifficulty);
+                
+                // Reinitialize question navigation grid
+                initQuestionNavGrid();
+                
+                // Load first question of new difficulty
+                loadQuestion();
+                
+                // Re-enable buttons
+                buttons.forEach(btn => btn.disabled = false);
+                
+                console.log(`Switched to ${newDifficulty} difficulty`);
+            } catch (error) {
+                console.error('Failed to switch difficulty:', error);
+                alert('Failed to switch difficulty. Please try again.');
+                
+                // Re-enable buttons and revert UI
+                document.querySelectorAll('.difficulty-btn').forEach(btn => btn.disabled = false);
+                updateDifficultySwitcher(currentTest.difficulty);
+            }
+        }
+
+        function loadQuestion() {
+            if (currentTest.currentIndex >= currentTest.questions.length) return;
+            
+            const question = currentTest.questions[currentTest.currentIndex];
+            
+            // Update question counter with difficulty
+            const difficultyLabel = currentTest.difficulty.charAt(0) + currentTest.difficulty.slice(1).toLowerCase();
+            document.getElementById('question-counter').textContent = 
+                `${difficultyLabel} Question ${currentTest.currentIndex + 1} of ${currentTest.questions.length}`;
+            document.getElementById('difficulty-badge').textContent = question.difficulty;
+            document.getElementById('difficulty-badge').className = 
+                `difficulty-badge ${question.difficulty.toLowerCase()}`;
+            
+            // Update question text
+            document.getElementById('current-question').textContent = question.question_text;
+            
+            // Clear hint
+            document.getElementById('hint-container').classList.add('hidden');
+            document.getElementById('hint-container').innerHTML = '';
+            
+            // Load options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                    <div>${option}</div>
+                `;
+                optionDiv.onclick = () => selectOption(index);
+                
+                // Restore previous selection
+                if (currentTest.answers[currentTest.currentIndex] === index) {
+                    optionDiv.classList.add('selected');
+                }
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Update question navigation grid
+            updateQuestionNavGrid();
+        }
+        
+        // Initialize Question Navigation Grid
+        function initQuestionNavGrid() {
+            const grid = document.getElementById('question-nav-grid');
+            if (!grid || !currentTest) return;
+            
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < currentTest.questions.length; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'question-nav-btn unanswered';
+                btn.textContent = i + 1;
+                btn.onclick = () => jumpToQuestion(i);
+                btn.setAttribute('data-question-index', i);
+                grid.appendChild(btn);
+            }
+            
+            updateQuestionNavGrid();
+        }
+        
+        // Update Question Navigation Grid
+        function updateQuestionNavGrid() {
+            if (!currentTest) return;
+            
+            const buttons = document.querySelectorAll('.question-nav-btn');
+            buttons.forEach((btn, index) => {
+                // Remove all state classes
+                btn.classList.remove('unanswered', 'current', 'correct', 'incorrect');
+                
+                // Add current state
+                if (index === currentTest.currentIndex) {
+                    btn.classList.add('current');
+                }
+                // Add answered state
+                else if (currentTest.answers[index] !== null) {
+                    // Check if answer was submitted and is correct/incorrect
+                    if (currentTest.results && currentTest.results[index] !== undefined) {
+                        btn.classList.add(currentTest.results[index] ? 'correct' : 'incorrect');
+                    } else {
+                        // Just answered but not submitted yet - show as current style
+                        btn.classList.add('unanswered');
+                        btn.style.background = 'rgba(37, 99, 235, 0.2)';
+                        btn.style.borderColor = 'var(--primary)';
+                    }
+                }
+                // Unanswered
+                else {
+                    btn.classList.add('unanswered');
+                }
+            });
+        }
+        
+        // Jump to Question
+        function jumpToQuestion(index) {
+            if (!currentTest || index < 0 || index >= currentTest.questions.length) return;
+            
+            currentTest.currentIndex = index;
+            loadQuestion();
+        }
+        
+        // Keyboard Shortcuts for Question Navigation
+        document.addEventListener('keydown', (e) => {
+            if (!currentTest) return;
+            
+            // Number keys 1-9, 0 for question 10
+            if (e.key >= '1' && e.key <= '9') {
+                const questionIndex = parseInt(e.key) - 1;
+                if (questionIndex < currentTest.questions.length) {
+                    jumpToQuestion(questionIndex);
+                }
+            } else if (e.key === '0') {
+                if (currentTest.questions.length >= 10) {
+                    jumpToQuestion(9);
+                }
+            }
+            // Arrow keys
+            else if (e.key === 'ArrowLeft') {
+                previousQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+            // Enter to submit
+            else if (e.key === 'Enter') {
+                submitAnswer();
+            }
+        });
+
+        function selectOption(optionIndex) {
+            currentTest.answers[currentTest.currentIndex] = optionIndex;
+            
+            // Update UI
+            document.querySelectorAll('.option').forEach((opt, idx) => {
+                opt.classList.remove('selected');
+                if (idx === optionIndex) {
+                    opt.classList.add('selected');
+                }
+            });
+        }
+
+        async function submitAnswer() {
+            const selectedAnswer = currentTest.answers[currentTest.currentIndex];
+            if (selectedAnswer === null) {
+                alert('Please select an answer first!');
+                return;
+            }
+            
+            const question = currentTest.questions[currentTest.currentIndex];
+            const isCorrect = selectedAnswer === question.correct_answer;
+            
+            // Track result for navigation grid
+            currentTest.results[currentTest.currentIndex] = isCorrect;
+            
+            // Show feedback
+            document.querySelectorAll('.option').forEach((opt, idx) => {
+                opt.classList.remove('selected');
+                if (idx === question.correct_answer) {
+                    opt.classList.add('correct');
+                } else if (idx === selectedAnswer && !isCorrect) {
+                    opt.classList.add('incorrect');
+                }
+                opt.style.pointerEvents = 'none';
+            });
+            
+            // Show explanation
+            const hintContainer = document.getElementById('hint-container');
+            hintContainer.className = 'hint-section';
+            hintContainer.innerHTML = `
+                <div class="hint-title">
+                    <i class="fas fa-${isCorrect ? 'check-circle' : 'times-circle'}"></i>
+                    ${isCorrect ? 'Correct!' : 'Incorrect'}
+                </div>
+                <div class="hint-text">${question.explanation || 'No explanation available.'}</div>
+            `;
+            
+            if (isCorrect) {
+                currentTest.score++;
+            }
+            
+            // Update navigation grid to show result
+            updateQuestionNavGrid();
+        }
+
+        async function getHint() {
+            const question = currentTest.questions[currentTest.currentIndex];
+            
+            try {
+                const response = await fetch(`/api/questions/${question.id}/hint`);
+                const data = await response.json();
+                
+                const hintContainer = document.getElementById('hint-container');
+                hintContainer.className = 'hint-section';
+                hintContainer.innerHTML = `
+                    <div class="hint-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Hint
+                    </div>
+                    <div class="hint-text">${data.hint || 'No hint available.'}</div>
+                `;
+            } catch (error) {
+                console.error('Failed to load hint:', error);
+                alert('Failed to load hint. Please try again.');
+            }
+        }
+
+        function nextQuestion() {
+            if (currentTest.currentIndex < currentTest.questions.length - 1) {
+                currentTest.currentIndex++;
+                loadQuestion();
+            } else {
+                finishTest();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentTest.currentIndex > 0) {
+                currentTest.currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function finishTest() {
+            // Calculate final score
+            const percentage = Math.round((currentTest.score / currentTest.questions.length) * 100);
+            
+            // Hide test interface, show summary
+            document.getElementById('test-interface').classList.add('hidden');
+            document.getElementById('test-summary').classList.remove('hidden');
+            
+            // Update summary
+            document.getElementById('final-score').textContent = `${percentage}%`;
+            document.getElementById('correct-count').textContent = currentTest.score;
+            document.getElementById('incorrect-count').textContent = 
+                currentTest.questions.length - currentTest.score;
+            
+            let message = '';
+            if (percentage >= 90) message = 'Outstanding! You\'re a master! 🌟';
+            else if (percentage >= 70) message = 'Great job! Keep it up! 👏';
+            else if (percentage >= 50) message = 'Good effort! Practice makes perfect! 💪';
+            else message = 'Keep learning! You\'ll improve! 📚';
+            
+            document.getElementById('score-message').textContent = message;
+            
+            // Update analytics
+            updateTestStats(percentage);
+        }
+
+        function backToSubjects() {
+            document.getElementById('subject-selection').classList.remove('hidden');
+            document.getElementById('test-interface').classList.add('hidden');
+            document.getElementById('test-summary').classList.add('hidden');
+            
+            // Reset test state
+            currentTest = {
+                subjectId: null,
+                subjectName: null,
+                questions: [],
+                currentIndex: 0,
+                answers: [],
+                score: 0
+            };
+        }
+
+        function updateTestStats(score) {
+            // Update localStorage stats with comprehensive tracking
+            const stats = JSON.parse(localStorage.getItem('testStats') || '{"testsTaken": 0, "totalScore": 0, "totalQuestions": 0, "totalTime": 0, "byDifficulty": {}, "bySubject": {}, "history": []}');
+            
+            const totalQuestions = currentTest.questions.length;
+            const correctAnswers = currentTest.score;
+            const timeSpent = currentTest.startTime ? Math.floor((Date.now() - currentTest.startTime) / 1000) : 0;
+            const difficulty = currentTest.difficulty || 'MIXED';
+            const subject = currentTest.subjectName || 'Unknown';
+            
+            // Overall stats
+            stats.testsTaken = (stats.testsTaken || 0) + 1;
+            stats.totalScore = (stats.totalScore || 0) + score;
+            stats.totalQuestions = (stats.totalQuestions || 0) + totalQuestions;
+            stats.totalTime = (stats.totalTime || 0) + timeSpent;
+            
+            // Difficulty-specific stats
+            if (!stats.byDifficulty) stats.byDifficulty = {};
+            if (!stats.byDifficulty[difficulty]) {
+                stats.byDifficulty[difficulty] = { count: 0, totalScore: 0, accuracy: 0 };
+            }
+            stats.byDifficulty[difficulty].count++;
+            stats.byDifficulty[difficulty].totalScore += score;
+            stats.byDifficulty[difficulty].accuracy = Math.round(stats.byDifficulty[difficulty].totalScore / stats.byDifficulty[difficulty].count);
+            
+            // Subject-specific stats with difficulty breakdown
+            if (!stats.bySubject) stats.bySubject = {};
+            if (!stats.bySubject[subject]) {
+                stats.bySubject[subject] = { 
+                    count: 0, 
+                    totalScore: 0, 
+                    accuracy: 0,
+                    byDifficulty: {}
+                };
+            }
+            stats.bySubject[subject].count++;
+            stats.bySubject[subject].totalScore += score;
+            stats.bySubject[subject].accuracy = Math.round(stats.bySubject[subject].totalScore / stats.bySubject[subject].count);
+            
+            // Subject × Difficulty breakdown for heatmap
+            if (!stats.bySubject[subject].byDifficulty) {
+                stats.bySubject[subject].byDifficulty = {};
+            }
+            if (!stats.bySubject[subject].byDifficulty[difficulty]) {
+                stats.bySubject[subject].byDifficulty[difficulty] = { count: 0, totalScore: 0, accuracy: 0 };
+            }
+            stats.bySubject[subject].byDifficulty[difficulty].count++;
+            stats.bySubject[subject].byDifficulty[difficulty].totalScore += score;
+            stats.bySubject[subject].byDifficulty[difficulty].accuracy = Math.round(
+                stats.bySubject[subject].byDifficulty[difficulty].totalScore / 
+                stats.bySubject[subject].byDifficulty[difficulty].count
+            );
+            
+            // History tracking
+            if (!stats.history) stats.history = [];
+            stats.history.push({
+                date: new Date().toISOString(),
+                subject: subject,
+                difficulty: difficulty,
+                score: correctAnswers,
+                total: totalQuestions,
+                accuracy: score,
+                time: timeSpent,
+                timestamp: Date.now()
+            });
+            
+            // Keep only last 50 tests in history
+            if (stats.history.length > 50) {
+                stats.history = stats.history.slice(-50);
+            }
+            
+            localStorage.setItem('testStats', JSON.stringify(stats));
+            
+            // Update display
+            updateAnalytics();
+        }
+
+        // Load Subjects
+        async function loadSubjects() {
+            try {
+                const response = await fetch('/api/subjects/');
+                const subjects = await response.json();
+                const container = document.getElementById('subjects-grid');
+                container.innerHTML = subjects.map(s => `
+                    <div class="subject-card" onclick="startTest(${s.id}, '${s.name}')">
+                        <div class="subject-icon">${s.icon}</div>
+                        <h3>${s.name}</h3>
+                        <p>${s.description}</p>
+                        <div class="question-count">${s.question_count} questions</div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load subjects:', error);
+            }
+        }
+
+        // Update Analytics
+        function updateAnalytics() {
+            const stats = JSON.parse(localStorage.getItem('testStats') || '{"testsTaken": 0, "totalScore": 0, "totalQuestions": 0, "totalTime": 0, "bySubject": {}, "byDifficulty": {}, "history": []}');
+            const avgAccuracy = stats.testsTaken > 0 ? Math.round(stats.totalScore / stats.testsTaken) : 0;
+            const avgTime = stats.totalQuestions > 0 ? Math.round(stats.totalTime / stats.totalQuestions) : 0;
+            
+            // Calculate streak
+            const streak = calculateStreak(stats.history || []);
+            
+            // Find best subject
+            const subjectData = stats.bySubject || {};
+            const subjects = Object.keys(subjectData);
+            let bestSubject = '-';
+            let bestAccuracy = 0;
+            if (subjects.length > 0) {
+                const best = subjects.reduce((a, b) => 
+                    (subjectData[a]?.accuracy || 0) > (subjectData[b]?.accuracy || 0) ? a : b
+                );
+                bestSubject = best;
+                bestAccuracy = subjectData[best]?.accuracy || 0;
+            }
+            
+            // Update home page stats
+            if (document.getElementById('tests-taken')) {
+                document.getElementById('tests-taken').textContent = stats.testsTaken;
+                document.getElementById('accuracy').textContent = `${avgAccuracy}%`;
+                document.getElementById('questions-available').textContent = '180';
+                document.getElementById('day-streak').textContent = streak;
+            }
+            
+            // Update analytics page stats
+            if (document.getElementById('stat-tests-taken')) {
+                document.getElementById('stat-tests-taken').textContent = stats.testsTaken;
+                document.getElementById('stat-avg-accuracy').textContent = `${avgAccuracy}%`;
+                document.getElementById('stat-total-questions').textContent = stats.totalQuestions || 0;
+                document.getElementById('stat-avg-time').textContent = `${avgTime}s`;
+                document.getElementById('stat-streak').textContent = streak;
+                document.getElementById('stat-best-subject').textContent = bestSubject;
+                
+                // Update trends
+                if (document.getElementById('stat-best-accuracy')) {
+                    document.getElementById('stat-best-accuracy').textContent = bestAccuracy > 0 ? `${bestAccuracy}%` : '';
+                }
+                
+                // Initialize charts
+                initializeCharts(stats);
+                
+                // Update progress rings
+                updateProgressRings(stats);
+                
+                // Render new features
+                renderInsights(stats);
+                renderRecentActivity(stats);
+                renderHeatmap(stats);
+                renderBreakdownTable(stats);
+            }
+        }
+        
+        // Calculate Streak
+        function calculateStreak(history) {
+            if (!history || history.length === 0) return 0;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let streak = 0;
+            let currentDate = new Date(today);
+            
+            for (let i = 0; i < 30; i++) { // Check last 30 days
+                const hasTest = history.some(test => {
+                    const testDate = new Date(test.date);
+                    testDate.setHours(0, 0, 0, 0);
+                    return testDate.getTime() === currentDate.getTime();
+                });
+                
+                if (hasTest) {
+                    streak++;
+                } else if (i > 0) {
+                    break; // Streak broken
+                }
+                
+                currentDate.setDate(currentDate.getDate() - 1);
+            }
+            
+            return streak;
+        }
+        
+        // Initialize Chart.js Charts
+        let charts = {};
+        
+        function initializeCharts(stats) {
+            // Destroy existing charts
+            Object.values(charts).forEach(chart => chart && chart.destroy());
+            charts = {};
+            
+            // Chart.js default config with performance optimizations
+            Chart.defaults.color = '#ffffff';
+            Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+            Chart.defaults.animation = {
+                duration: 750,
+                easing: 'easeInOutQuart'
+            };
+            Chart.defaults.responsive = true;
+            Chart.defaults.maintainAspectRatio = false;
+            
+            // Donut Chart - Accuracy by Subject
+            const subjectData = stats.bySubject || {};
+            const subjects = ['Technology', 'Science', 'Geography', 'General Knowledge'];
+            const subjectAccuracy = subjects.map(s => subjectData[s]?.accuracy || 0);
+            
+            const ctxSubject = document.getElementById('chart-accuracy-subject');
+            if (ctxSubject) {
+                charts.subject = new Chart(ctxSubject, {
+                    type: 'doughnut',
+                    data: {
+                        labels: subjects,
+                        datasets: [{
+                            data: subjectAccuracy,
+                            backgroundColor: [
+                                'rgba(37, 99, 235, 0.8)',
+                                'rgba(124, 58, 237, 0.8)',
+                                'rgba(6, 182, 212, 0.8)',
+                                'rgba(16, 185, 129, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(37, 99, 235, 1)',
+                                'rgba(124, 58, 237, 1)',
+                                'rgba(6, 182, 212, 1)',
+                                'rgba(16, 185, 129, 1)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 15,
+                                    font: { size: 12 }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.label}: ${context.parsed}%`
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Bar Chart - Performance by Difficulty
+            const difficultyData = stats.byDifficulty || {};
+            const difficulties = ['EASY', 'MEDIUM', 'HARD'];
+            const difficultyAccuracy = difficulties.map(d => difficultyData[d]?.accuracy || 0);
+            
+            const ctxDifficulty = document.getElementById('chart-difficulty');
+            if (ctxDifficulty) {
+                charts.difficulty = new Chart(ctxDifficulty, {
+                    type: 'bar',
+                    data: {
+                        labels: difficulties,
+                        datasets: [{
+                            label: 'Accuracy (%)',
+                            data: difficultyAccuracy,
+                            backgroundColor: [
+                                'rgba(16, 185, 129, 0.8)',
+                                'rgba(245, 158, 11, 0.8)',
+                                'rgba(239, 68, 68, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(16, 185, 129, 1)',
+                                'rgba(245, 158, 11, 1)',
+                                'rgba(239, 68, 68, 1)'
+                            ],
+                            borderWidth: 2,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: (value) => value + '%'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Radar Chart - Subject Comparison
+            const ctxRadar = document.getElementById('chart-radar');
+            if (ctxRadar) {
+                charts.radar = new Chart(ctxRadar, {
+                    type: 'radar',
+                    data: {
+                        labels: subjects,
+                        datasets: [{
+                            label: 'Accuracy',
+                            data: subjectAccuracy,
+                            backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                            borderColor: 'rgba(37, 99, 235, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(37, 99, 235, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(37, 99, 235, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20,
+                                    callback: (value) => value + '%'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Line Chart - Progress Over Time
+            const history = stats.history || [];
+            const last10Tests = history.slice(-10);
+            const labels = last10Tests.map((_, i) => `Test ${i + 1}`);
+            const progressData = last10Tests.map(t => t.accuracy || 0);
+            
+            const ctxProgress = document.getElementById('chart-progress');
+            if (ctxProgress) {
+                charts.progress = new Chart(ctxProgress, {
+                    type: 'line',
+                    data: {
+                        labels: labels.length > 0 ? labels : ['No data yet'],
+                        datasets: [{
+                            label: 'Accuracy (%)',
+                            data: progressData.length > 0 ? progressData : [0],
+                            borderColor: 'rgba(37, 99, 235, 1)',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            pointBackgroundColor: 'rgba(37, 99, 235, 1)',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: (value) => value + '%'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `Accuracy: ${context.parsed.y}%`
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Update Progress Rings
+        function updateProgressRings(stats) {
+            const difficultyData = stats.byDifficulty || {};
+            const avgAccuracy = stats.testsTaken > 0 ? Math.round(stats.totalScore / stats.testsTaken) : 0;
+            
+            // Overall progress
+            setProgressRing('progress-overall', avgAccuracy);
+            document.getElementById('progress-overall-text').textContent = `${avgAccuracy}%`;
+            
+            // Easy progress
+            const easyAccuracy = difficultyData.EASY?.accuracy || 0;
+            setProgressRing('progress-easy', easyAccuracy);
+            document.getElementById('progress-easy-text').textContent = `${easyAccuracy}%`;
+            
+            // Medium progress
+            const mediumAccuracy = difficultyData.MEDIUM?.accuracy || 0;
+            setProgressRing('progress-medium', mediumAccuracy);
+            document.getElementById('progress-medium-text').textContent = `${mediumAccuracy}%`;
+            
+            // Hard progress
+            const hardAccuracy = difficultyData.HARD?.accuracy || 0;
+            setProgressRing('progress-hard', hardAccuracy);
+            document.getElementById('progress-hard-text').textContent = `${hardAccuracy}%`;
+        }
+        
+        // Set Progress Ring
+        function setProgressRing(id, percentage) {
+            const circle = document.getElementById(id);
+            if (!circle) return;
+            
+            const circumference = 2 * Math.PI * 52; // radius = 52
+            const offset = circumference - (percentage / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        // Export Analytics
+        function exportAnalytics(format) {
+            if (format === 'png') {
+                // Create a canvas with all charts
+                alert('Export feature: This would export all charts as PNG. Feature coming soon!');
+            }
+        }
+
+        // Clear Analytics Data
+        function clearAnalytics() {
+            if (confirm('Are you sure you want to clear all analytics data? This cannot be undone.')) {
+                localStorage.removeItem('testStats');
+                localStorage.removeItem('testHistory');
+                updateAnalytics();
+                alert('Analytics data cleared successfully!');
+            }
+        }
+
+        // Generate Insights
+        function generateInsights(stats) {
+            const insights = [];
+            const avgAccuracy = stats.testsTaken > 0 ? Math.round(stats.totalScore / stats.testsTaken) : 0;
+            
+            // Accuracy insights
+            if (avgAccuracy >= 90) {
+                insights.push({
+                    icon: 'fa-star',
+                    color: 'var(--success)',
+                    text: 'Excellent performance! You\'re mastering the material.'
+                });
+            } else if (avgAccuracy >= 70) {
+                insights.push({
+                    icon: 'fa-thumbs-up',
+                    color: 'var(--primary)',
+                    text: 'Good progress! Keep practicing to reach excellence.'
+                });
+            } else if (avgAccuracy >= 50) {
+                insights.push({
+                    icon: 'fa-chart-line',
+                    color: 'var(--warning)',
+                    text: 'You\'re improving! Focus on your weak areas.'
+                });
+            } else if (stats.testsTaken > 0) {
+                insights.push({
+                    icon: 'fa-book',
+                    color: 'var(--error)',
+                    text: 'Keep studying! Review the explanations after each question.'
+                });
+            }
+            
+            // Subject-specific insights
+            const subjectData = stats.bySubject || {};
+            const subjects = Object.keys(subjectData);
+            if (subjects.length > 0) {
+                const bestSubject = subjects.reduce((a, b) => 
+                    (subjectData[a]?.accuracy || 0) > (subjectData[b]?.accuracy || 0) ? a : b
+                );
+                const worstSubject = subjects.reduce((a, b) => 
+                    (subjectData[a]?.accuracy || 0) < (subjectData[b]?.accuracy || 0) ? a : b
+                );
+                
+                if (bestSubject && (subjectData[bestSubject]?.accuracy || 0) > 80) {
+                    insights.push({
+                        icon: 'fa-trophy',
+                        color: 'var(--success)',
+                        text: `You excel at ${bestSubject}! Consider helping others in this area.`
+                    });
+                }
+                
+                if (worstSubject && (subjectData[worstSubject]?.accuracy || 0) < 60) {
+                    insights.push({
+                        icon: 'fa-exclamation-triangle',
+                        color: 'var(--warning)',
+                        text: `Focus more on ${worstSubject}. Try the easy questions first.`
+                    });
+                }
+            }
+            
+            // Difficulty insights
+            const difficultyData = stats.byDifficulty || {};
+            if (difficultyData.EASY && difficultyData.EASY.accuracy > 90) {
+                insights.push({
+                    icon: 'fa-level-up-alt',
+                    color: 'var(--info)',
+                    text: 'You\'ve mastered easy questions! Try medium difficulty.'
+                });
+            }
+            
+            if (difficultyData.HARD && difficultyData.HARD.accuracy > 70) {
+                insights.push({
+                    icon: 'fa-fire',
+                    color: 'var(--error)',
+                    text: 'Impressive! You\'re handling hard questions well.'
+                });
+            }
+            
+            // Test frequency insights
+            if (stats.testsTaken >= 10) {
+                insights.push({
+                    icon: 'fa-medal',
+                    color: 'var(--primary)',
+                    text: `You've completed ${stats.testsTaken} tests! Consistency is key to success.`
+                });
+            }
+            
+            return insights;
+        }
+
+        // Render Insights
+        function renderInsights(stats) {
+            const container = document.getElementById('insights-container');
+            if (!container) return;
+            
+            const insights = generateInsights(stats);
+            
+            if (insights.length === 0) {
+                container.innerHTML = `
+                    <div class="insight-item">
+                        <i class="fas fa-info-circle" style="color: var(--info);"></i>
+                        <span>Complete more tests to see personalized insights</span>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = insights.map(insight => `
+                <div class="insight-item" style="display: flex; align-items: start; gap: 1rem; padding: 1rem; background: rgba(65, 105, 225, 0.08); border-radius: 12px;">
+                    <i class="fas ${insight.icon}" style="color: ${insight.color}; font-size: 1.5rem; margin-top: 0.25rem;"></i>
+                    <span style="flex: 1; color: var(--text-primary);">${insight.text}</span>
+                </div>
+            `).join('');
+        }
+
+        // Render Recent Activity
+        function renderRecentActivity(stats) {
+            const container = document.getElementById('recent-activity-container');
+            if (!container) return;
+            
+            const history = stats.history || [];
+            
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                        No recent activity
+                    </div>
+                `;
+                return;
+            }
+            
+            const recentTests = history.slice(-10).reverse();
+            
+            container.innerHTML = recentTests.map((test, idx) => {
+                const date = new Date(test.date);
+                const timeAgo = getTimeAgo(date);
+                const accuracy = test.score ? Math.round((test.score / test.total) * 100) : 0;
+                const accuracyColor = accuracy >= 80 ? 'var(--success)' : accuracy >= 60 ? 'var(--warning)' : 'var(--error)';
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(65, 105, 225, 0.05); border-radius: 8px; margin-bottom: 0.75rem;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">
+                                ${test.subject || 'Test'} - ${test.difficulty || 'Mixed'}
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">
+                                ${timeAgo}
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 1.25rem; font-weight: 700; color: ${accuracyColor};">
+                                ${accuracy}%
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">
+                                ${test.score}/${test.total}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Get Time Ago
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)} days ago`;
+            
+            return date.toLocaleDateString();
+        }
+
+        // Render Performance Heatmap
+        function renderHeatmap(stats) {
+            const container = document.getElementById('heatmap-container');
+            if (!container) return;
+            
+            const subjects = ['Technology', 'Science', 'Geography', 'General Knowledge'];
+            const difficulties = ['EASY', 'MEDIUM', 'HARD'];
+            
+            let html = '<table style="width: 100%; border-collapse: collapse;">';
+            html += '<thead><tr><th style="padding: 1rem; text-align: left;">Subject</th>';
+            difficulties.forEach(d => {
+                html += `<th style="padding: 1rem; text-align: center;">${d}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+            
+            subjects.forEach(subject => {
+                html += '<tr>';
+                html += `<td style="padding: 1rem; font-weight: 600;">${subject}</td>`;
+                
+                difficulties.forEach(difficulty => {
+                    const key = `${subject}_${difficulty}`;
+                    const data = stats.bySubject?.[subject]?.byDifficulty?.[difficulty];
+                    const accuracy = data?.accuracy || 0;
+                    const count = data?.count || 0;
+                    
+                    let bgColor = 'rgba(100, 100, 100, 0.1)';
+                    if (accuracy >= 80) bgColor = 'rgba(16, 185, 129, 0.3)';
+                    else if (accuracy >= 60) bgColor = 'rgba(245, 158, 11, 0.3)';
+                    else if (accuracy > 0) bgColor = 'rgba(239, 68, 68, 0.3)';
+                    
+                    html += `
+                        <td style="padding: 1rem; text-align: center; background: ${bgColor}; border-radius: 8px;">
+                            <div style="font-size: 1.25rem; font-weight: 700;">${accuracy}%</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">${count} tests</div>
+                        </td>
+                    `;
+                });
+                
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Render Breakdown Table
+        function renderBreakdownTable(stats) {
+            const container = document.getElementById('breakdown-table');
+            if (!container) return;
+            
+            const subjects = ['Technology', 'Science', 'Geography', 'General Knowledge'];
+            
+            let html = '<table style="width: 100%; border-collapse: collapse;">';
+            html += `
+                <thead>
+                    <tr style="background: rgba(65, 105, 225, 0.1);">
+                        <th style="padding: 1rem; text-align: left;">Subject</th>
+                        <th style="padding: 1rem; text-align: center;">Tests</th>
+                        <th style="padding: 1rem; text-align: center;">Accuracy</th>
+                        <th style="padding: 1rem; text-align: center;">Easy</th>
+                        <th style="padding: 1rem; text-align: center;">Medium</th>
+                        <th style="padding: 1rem; text-align: center;">Hard</th>
+                        <th style="padding: 1rem; text-align: center;">Trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            subjects.forEach((subject, idx) => {
+                const data = stats.bySubject?.[subject] || {};
+                const accuracy = data.accuracy || 0;
+                const count = data.count || 0;
+                const easy = data.byDifficulty?.EASY?.accuracy || 0;
+                const medium = data.byDifficulty?.MEDIUM?.accuracy || 0;
+                const hard = data.byDifficulty?.HARD?.accuracy || 0;
+                
+                const trendIcon = accuracy >= 70 ? '📈' : accuracy >= 50 ? '➡️' : '📉';
+                
+                html += `
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 1rem; font-weight: 600;">${subject}</td>
+                        <td style="padding: 1rem; text-align: center;">${count}</td>
+                        <td style="padding: 1rem; text-align: center; font-weight: 700; color: ${accuracy >= 70 ? 'var(--success)' : accuracy >= 50 ? 'var(--warning)' : 'var(--error)'};">${accuracy}%</td>
+                        <td style="padding: 1rem; text-align: center;">${easy}%</td>
+                        <td style="padding: 1rem; text-align: center;">${medium}%</td>
+                        <td style="padding: 1rem; text-align: center;">${hard}%</td>
+                        <td style="padding: 1rem; text-align: center; font-size: 1.5rem;">${trendIcon}</td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Load My Questions
+        async function loadMyQuestions() {
+            const container = document.getElementById('my-questions-list');
+            try {
+                const response = await fetch('/api/upload/uploaded-questions');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const questions = await response.json();
+                
+                if (!questions || questions.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-questions" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                            <i class="fas fa-upload" style="font-size: 4rem; margin-bottom: 1.5rem; color: var(--primary);"></i>
+                            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">No questions generated yet</h3>
+                            <p style="font-size: 1rem; margin-bottom: 2rem;">Upload a document to automatically generate 45 questions!</p>
+                            <button class="btn btn-primary" onclick="showSection('upload', event)">
+                                <i class="fas fa-cloud-upload-alt"></i> Upload Document
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Group questions by source document
+                const groupedQuestions = {};
+                questions.forEach(q => {
+                    const doc = q.source_document || 'Unknown';
+                    if (!groupedQuestions[doc]) {
+                        groupedQuestions[doc] = [];
+                    }
+                    groupedQuestions[doc].push(q);
+                });
+                
+                let html = '';
+                for (const [doc, docQuestions] of Object.entries(groupedQuestions)) {
+                    const easyCount = docQuestions.filter(q => q.difficulty === 'EASY').length;
+                    const mediumCount = docQuestions.filter(q => q.difficulty === 'MEDIUM').length;
+                    const hardCount = docQuestions.filter(q => q.difficulty === 'HARD').length;
+                    
+                    html += `
+                        <div class="document-group" style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                <div>
+                                    <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">
+                                        <i class="fas fa-file-alt" style="color: var(--primary);"></i> ${doc}
+                                    </h3>
+                                    <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                        ${docQuestions.length} questions generated
+                                    </p>
+                                </div>
+                                <button class="btn btn-primary" onclick="startMyQuestionsTest('${doc}')">
+                                    <i class="fas fa-play"></i> Take Test
+                                </button>
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                                <span class="difficulty-badge" style="padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; background: var(--gradient-success); color: white;">
+                                    <i class="fas fa-check-circle"></i> Easy: ${easyCount}
+                                </span>
+                                <span class="difficulty-badge" style="padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; background: var(--gradient-accent); color: white;">
+                                    <i class="fas fa-star"></i> Medium: ${mediumCount}
+                                </span>
+                                <span class="difficulty-badge" style="padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; background: var(--gradient-primary); color: white;">
+                                    <i class="fas fa-fire"></i> Hard: ${hardCount}
+                                </span>
+                            </div>
+                            
+                            <div class="questions-preview">
+                                <h4 style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Preview (first 3 questions):</h4>
+                                ${docQuestions.slice(0, 3).map((q, idx) => `
+                                    <div class="question-preview-item" style="background: rgba(65, 105, 225, 0.08); border-left: 3px solid var(--primary); padding: 1rem; margin-bottom: 0.75rem; border-radius: 8px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                                            <span style="color: var(--text-primary); font-weight: 500;">${idx + 1}. ${q.question_text}</span>
+                                            <span class="difficulty-badge ${q.difficulty.toLowerCase()}" style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; background: var(--gradient-primary); color: white; white-space: nowrap; margin-left: 1rem;">${q.difficulty}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                                ${docQuestions.length > 3 ? `<p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-top: 1rem;"><i class="fas fa-ellipsis-h"></i> and ${docQuestions.length - 3} more questions</p>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Failed to load my questions:', error);
+                container.innerHTML = `
+                    <div class="error" style="text-align: center; padding: 3rem; color: var(--error);">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3 style="margin-bottom: 1rem;">Failed to load questions</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Please try refreshing the page.</p>
+                        <button class="btn btn-secondary" onclick="loadMyQuestions()" style="margin-top: 1rem;">
+                            <i class="fas fa-redo"></i> Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Load My Questions
+        async function loadMyQuestions() {
+            const container = document.getElementById('my-questions-content');
+            if (!container) return;
+            
+            try {
+                const response = await fetch('/api/upload/uploaded-questions');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load questions');
+                }
+                
+                const questions = await response.json();
+                
+                if (!questions || questions.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                            <i class="fas fa-upload" style="font-size: 4rem; margin-bottom: 1.5rem; color: var(--primary);"></i>
+                            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">No questions generated yet</h3>
+                            <p style="font-size: 1rem; margin-bottom: 2rem;">Upload a document to automatically generate 45 questions!</p>
+                            <button class="btn btn-primary" onclick="showSection('upload', event)">
+                                <i class="fas fa-cloud-upload-alt"></i> Upload Document
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Group questions by source document
+                const groupedQuestions = {};
+                questions.forEach(q => {
+                    const doc = q.source_document || 'Unknown';
+                    if (!groupedQuestions[doc]) {
+                        groupedQuestions[doc] = [];
+                    }
+                    groupedQuestions[doc].push(q);
+                });
+                
+                let html = '';
+                for (const [doc, docQuestions] of Object.entries(groupedQuestions)) {
+                    const easyCount = docQuestions.filter(q => q.difficulty === 'EASY').length;
+                    const mediumCount = docQuestions.filter(q => q.difficulty === 'MEDIUM').length;
+                    const hardCount = docQuestions.filter(q => q.difficulty === 'HARD').length;
+                    
+                    html += `
+                        <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                <div>
+                                    <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">
+                                        <i class="fas fa-file-alt" style="color: var(--primary);"></i> ${doc}
+                                    </h3>
+                                    <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                        ${docQuestions.length} questions generated
+                                    </p>
+                                </div>
+                                <button class="btn btn-primary" onclick="startMyQuestionsTest('${doc}')">
+                                    <i class="fas fa-play"></i> Take Test
+                                </button>
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                                <span style="padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; background: var(--success); color: white;">
+                                    <i class="fas fa-check-circle"></i> Easy: ${easyCount}
+                                </span>
+                                <span style="padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; background: var(--warning); color: white;">
+                                    <i class="fas fa-star"></i> Medium: ${mediumCount}
+                                </span>
+                                <span style="padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; background: var(--error); color: white;">
+                                    <i class="fas fa-fire"></i> Hard: ${hardCount}
+                                </span>
+                            </div>
+                            
+                            <div>
+                                <h4 style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Preview (first 3 questions):</h4>
+                                ${docQuestions.slice(0, 3).map((q, idx) => `
+                                    <div style="background: rgba(65, 105, 225, 0.08); border-left: 3px solid var(--primary); padding: 1rem; margin-bottom: 0.75rem; border-radius: 8px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                                            <p style="color: var(--text-primary); flex: 1; margin: 0;">${q.question_text}</p>
+                                            <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 1rem; white-space: nowrap; background: ${q.difficulty === 'EASY' ? 'var(--success)' : q.difficulty === 'MEDIUM' ? 'var(--warning)' : 'var(--error)'}; color: white;">
+                                                ${q.difficulty}
+                                            </span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                                ${docQuestions.length > 3 ? `<p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">... and ${docQuestions.length - 3} more questions</p>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Failed to load My Questions:', error);
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--error);">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 4rem; margin-bottom: 1.5rem;"></i>
+                        <h3 style="margin-bottom: 1rem;">Failed to load questions</h3>
+                        <p style="margin-bottom: 2rem;">${error.message}</p>
+                        <button class="btn btn-primary" onclick="loadMyQuestions()">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        // File Upload Handler
+        document.getElementById('file-input').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const statusDiv = document.getElementById('upload-status');
+            statusDiv.innerHTML = '<p style="color: var(--info);">Uploading and processing document...</p>';
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('subject_id', '1'); // Default to Technology
+            
+            try {
+                const response = await fetch('/api/upload/', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = `
+                        <div style="color: var(--success); padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 12px;">
+                            <h3>✅ Success!</h3>
+                            <p>Generated ${result.questions_generated} questions</p>
+                            <p>Easy: ${result.difficulty_distribution.EASY}, Medium: ${result.difficulty_distribution.MEDIUM}, Hard: ${result.difficulty_distribution.HARD}</p>
+                        </div>
+                    `;
+                    loadMyQuestions(); // Refresh the questions list
+                    e.target.value = ''; // Reset file input
+                } else {
+                    statusDiv.innerHTML = `
+                        <div style="color: var(--error); padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 12px;">
+                            <h3>❌ Upload Failed</h3>
+                            <p>${result.detail || 'Please try again'}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                statusDiv.innerHTML = `
+                    <div style="color: var(--error); padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 12px;">
+                        <h3>❌ Upload Failed</h3>
+                        <p>Error: ${error.message}</p>
+                        <p>Please check if the server is running and try again.</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+    
+    <!-- Static background - no animation needed -->
+</body>
+</html>
